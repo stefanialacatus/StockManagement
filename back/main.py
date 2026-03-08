@@ -664,7 +664,6 @@ def get_recommendations():
             return 0
 
         if status in ['UNDERSTOCK', 'AT-RISK']:
-            # Target enough units so receiver moves into OK (>14 days).
             return max(1, math.ceil((TARGET_OK_DAYS * velocity) - stock))
 
         return 0
@@ -708,8 +707,6 @@ def get_recommendations():
             dead_stock_best_target[key] = None
             return None
 
-        # Prioritize: UNDERSTOCK first, then destination that can absorb more dead stock
-        # without going OVERSTOCK, then larger shortage-to-OK.
         candidates.sort(key=lambda x: (x[0], x[1], x[2]), reverse=True)
         best = candidates[0]
         dead_stock_best_target[key] = {
@@ -739,7 +736,6 @@ def get_recommendations():
                 velocity_to = to_data['velocity']
                 status_to = to_data['status']
 
-                # Skip if destination is DEAD STOCK - never send transfers there
                 if status_to == 'DEAD STOCK':
                     continue
 
@@ -853,22 +849,20 @@ def get_recommendations():
 
         solver.Add(var <= VEHICLE_CAPACITY * trip_var)
 
-        # Calculate priority multiplier based on source and destination status
         from_status = stores_data[f][pid]['status']
         to_status = stores_data[t][pid]['status']
         
         priority_multiplier = 1.0
         
-        # Dead stock transfers get highest priority
         if from_status == 'DEAD STOCK':
             if to_status == 'UNDERSTOCK':
-                priority_multiplier = 3.0  # Highest priority: dead stock to understock
+                priority_multiplier = 3.0 
             elif to_status == 'AT-RISK':
-                priority_multiplier = 2.0  # Medium priority: dead stock to at-risk
+                priority_multiplier = 2.0  
         elif to_status == 'UNDERSTOCK':
-            priority_multiplier = 1.5  # High priority for understock destinations
+            priority_multiplier = 1.5 
         elif to_status == 'AT-RISK':
-            priority_multiplier = 1.2  # Medium priority for at-risk destinations
+            priority_multiplier = 1.2 
         
         benefit = TRANSFER_BENEFIT_PER_UNIT * priority_multiplier
 

@@ -79,7 +79,7 @@ const Notifications = () => {
                 <strong>{notification.storeName}</strong>
               </p>
               <p className="notification-message">
-                Product: <strong>{notification.productName}</strong> - Status: <strong>{notification.reason === 'understock' ? '🔴 UNDERSTOCK' : '🟠 AT RISK'}</strong>
+                Product: <strong>{notification.productName}</strong> - Status: <strong>{notification.reason.toUpperCase() === 'UNDERSTOCK' ? '🔴 UNDERSTOCK' : '🟠 AT RISK'}</strong>
               </p>
               <p className="notification-time">
                 {new Date(notification.timestamp).toLocaleString()}
