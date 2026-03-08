@@ -272,8 +272,7 @@ const Dashboard = ({ user }) => {
       <div className="dashboard-container">
         <header className="dashboard-header">
           <div>
-            <h3>{user.role === 'admin' ? "All Stores Products" : "Store Products"}</h3>
-          </div>
+            <h3>{user.role === 'admin' ? 'Inventory Overview - All Stores' : 'Inventory Overview - My Store'}</h3>          </div>
         </header>
 
         <div className={`store-grid-table ${user.role !== 'admin' ? 'seller-view' : ''}`}>
@@ -353,10 +352,9 @@ const Dashboard = ({ user }) => {
 
   return (
     <div className="dashboard-container">
-      {user.role === 'admin' && <Notifications />}
       <header className="dashboard-header">
         <div>
-          <h3>{user.role === 'admin' ? "All Stores Products" : "Store Products"}</h3>
+          <h3>{user.role === 'admin' ? 'Inventory Overview - All Stores' : 'Inventory Overview - My Store'}</h3>
         </div>
         {user.role === 'admin' && (
           <button className="btn-primary" onClick={handleNewTransferClick}>
@@ -364,6 +362,8 @@ const Dashboard = ({ user }) => {
           </button>
         )}
       </header>
+
+      {user.role === 'admin' && <Notifications />}
 
       {error && stores.length > 0 && (
         <p className="dashboard-inline-error">Error refreshing data: {error}</p>

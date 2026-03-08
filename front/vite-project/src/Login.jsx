@@ -24,7 +24,7 @@ const Login = ({ onLogin }) => {
       }
 
       const data = await response.json();
-      localStorage.setItem('token', data.token);
+      sessionStorage.setItem('token', data.token);
       onLogin({
         username: data.username,
         role: data.role,

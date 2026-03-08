@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleExclamation, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { notificationService } from './notificationService';
 
 const NOTIFICATIONS_KEY = 'stock_transfer_notifications';
@@ -69,7 +71,7 @@ const Notifications = () => {
   return (
     <div className="notifications-container">
       <div className="notifications-header">
-        <h4>📬 Transfer Requests ({notifications.length})</h4>
+        <h4><FontAwesomeIcon icon={faEnvelope} /> Transfer Requests ({notifications.length})</h4>
       </div>
       <div className="notifications-list">
         {notifications.map(notification => (
@@ -79,7 +81,13 @@ const Notifications = () => {
                 <strong>{notification.storeName}</strong>
               </p>
               <p className="notification-message">
-                Product: <strong>{notification.productName}</strong> - Status: <strong>{notification.reason.toUpperCase() === 'UNDERSTOCK' ? '🔴 UNDERSTOCK' : '🟠 AT RISK'}</strong>
+                Product: <strong>{notification.productName}</strong> - Status: <strong>
+                  <FontAwesomeIcon 
+                    icon={faCircleExclamation} 
+                    style={{ color: notification.reason.toUpperCase() === 'UNDERSTOCK' ? '#ef4444' : '#f97316' }}
+                  />
+                  {' '}{notification.reason.toUpperCase() === 'UNDERSTOCK' ? 'UNDERSTOCK' : 'AT RISK'}
+                </strong>
               </p>
               <p className="notification-time">
                 {new Date(notification.timestamp).toLocaleString()}

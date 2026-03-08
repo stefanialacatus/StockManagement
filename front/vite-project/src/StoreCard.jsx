@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLightbulb, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faLightbulb, faSpinner, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { notificationService } from './notificationService';
 
 const API_BASE = 'http://localhost:3001';
@@ -71,7 +71,7 @@ const StoreCard = ({ store, allStores, recommendations = [], onTransfer, onAddSa
         if (!destinationProduct) return null;
 
         const status = destinationProduct.status;
-        if (status !== 'UNDERSTOCK' && status !== 'AT-RISK') return null;
+        if (status !== 'UNDERSTOCK' && status !== 'AT-RISK' && status !== 'OK') return null;
 
         const velocity = Number(destinationProduct.velocity || 0);
         const destinationStock = Number(destinationProduct.stock || 0);
@@ -83,7 +83,7 @@ const StoreCard = ({ store, allStores, recommendations = [], onTransfer, onAddSa
 
         return {
           store: destinationStore,
-          priority: status === 'UNDERSTOCK' ? 2 : 1,
+          priority: status === 'UNDERSTOCK' ? 3 : status === 'AT-RISK' ? 2 : 1,
           neededForOk,
           maxWithoutOverstock,
         };
@@ -296,7 +296,7 @@ const StoreCard = ({ store, allStores, recommendations = [], onTransfer, onAddSa
       <div className={`store-card-table ${isRefreshing ? 'is-loading' : ''}`}>
         <div className="store-header">
           <h3>{store.name}</h3>
-          <span className="store-city">{store.location}</span>
+          <span className="store-city"><FontAwesomeIcon icon={faLocationDot} /> {store.location}</span>
         </div>
         
         <table className="products-table">
