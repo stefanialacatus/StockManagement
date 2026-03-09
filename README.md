@@ -4,8 +4,8 @@ StockManagement is a web application that provides recommendations for optimizin
 
 ### Features:
 - Authentication as admin or store manager
-- Admin: Inventory monitoring across all store locations
-- Store Manager: Inventory monitoring for the alocated store
+- **Admin**: Inventory monitoring across all store locations
+- **Store Manager**: Inventory monitoring for the alocated store
 - Stock Status alerts (Understock, OK, At Risk, Overstock, Dead Stock)
 - Automatic stock transfer recommendations
 
